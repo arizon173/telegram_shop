@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Telegram Магазин</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>Telegram Магазин</h1>
+            <div class="cart-icon" id="cart-icon">
+                <span>🛒</span>
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Головна сторінка -->
+    <div id="home-page" class="page active">
+        <div class="banner">
+            <div class="banner-content">
+                <h2>Ласкаво просимо!</h2>
+                <p>Найкращі товари за найкращими цінами</p>
+                <button class="cta-button" id="explore-btn">Перейти до покупок</button>
+            </div>
+        </div>
+        
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🚚</div>
+                <h3>Швидка доставка</h3>
+                <p>За 1-2 дні по всій Україні</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👍</div>
+                <h3>Гарантія якості</h3>
+                <p>Всі товари мають гарантію</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💳</div>
+                <h3>Зручна оплата</h3>
+                <p>Безготівковий розрахунок</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔔</div>
+                <h3>Сповіщення</h3>
+                <p>Про акції та знижки</p>
+            </div>
+        </div>
+        
+        <div class="promo-section">
+            <h2>Популярні категорії</h2>
+            <div class="category-previews">
+                <div class="category-preview" data-category="Електроніка">
+                    <div class="preview-icon">📱</div>
+                    <span>Електроніка</span>
+                </div>
+                <div class="category-preview" data-category="Одяг">
+                    <div class="preview-icon">👕</div>
+                    <span>Одяг</span>
+                </div>
+                <div class="category-preview" data-category="Книги">
+                    <div class="preview-icon">📚</div>
+                    <span>Книги</span>
+                </div>
+                <div class="category-preview" data-category="Для дому">
+                    <div class="preview-icon">🏠</div>
+                    <span>Для дому</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Сторінка каталогу -->
+    <div id="catalog-page" class="page">
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Пошук товарів...">
+            <span class="search-icon">🔍</span>
+        </div>
+        
+        <div class="categories-scroll">
+            <div class="categories">
+                <div class="category-btn active" data-category="all">Всі товари</div>
+                <div class="category-btn" data-category="Електроніка">Електроніка</div>
+                <div class="category-btn" data-category="Одяг">Одяг</div>
+                <div class="category-btn" data-category="Книги">Книги</div>
+                <div class="category-btn" data-category="Для дому">Для дому</div>
+            </div>
+        </div>
+        
+        <div class="products-container">
+            <div class="products" id="products-list">
+                <!-- Товари будуть додані через JavaScript -->
+            </div>
+        </div>
+        
+        <div class="loading-indicator" id="loading-indicator">
+            <div class="spinner"></div>
+            <p>Завантаження товарів...</p>
+        </div>
+    </div>
+
+    <!-- Кошик -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h2>Ваш кошик</h2>
+            <button class="close-cart" id="close-cart">×</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Товари в кошику -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Загальна сума:</span>
+                <span id="total-price">0 грн</span>
+            </div>
+            <button class="checkout-btn">Оформити замовлення</button>
+        </div>
+    </div>
+    
+    <div class="cart-overlay" id="cart-overlay"></div>
+
+    <!-- Навігація -->
+     <!-- Навігація -->
+    <div class="nav">
+        <div class="nav-btn active" data-page="home-page">
+            <span class="nav-text">Головна</span>
+        </div>
+        <div class="nav-btn" data-page="catalog-page">
+            <span class="nav-text">Каталог</span>
+        </div>
+    </div>
+
+
+
+    <script src="script.js"></script>
+</body>
+</html>
