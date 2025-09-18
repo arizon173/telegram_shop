@@ -1,17 +1,15 @@
-// Дані товарів
+// ==========================================
+// 1. ДАНІ ТОВАРІВ (ОНОВЛЕНО: Годинники)
+// ==========================================
 const products = [
-    { id: 1, name: "Смартфон Xiaomi", price: 8999, category: "Електроніка" },
-    { id: 2, name: "Ноутбук Asus", price: 21999, category: "Електроніка" },
-    { id: 3, name: "Футболка чоловіча", price: 499, category: "Одяг" },
-    { id: 4, name: "Джинси класичні", price: 899, category: "Одяг" },
-    { id: 5, name: "Роман 'Хіба ревуть воли'", price: 199, category: "Книги" },
-    { id: 6, name: "Настільна лампа LED", price: 459, category: "Для дому" },
-    { id: 7, name: "Бездротові навушники", price: 1299, category: "Електроніка" },
-    { id: 8, name: "Кава в зернах", price: 89, category: "Для дому" },
-    { id: 9, name: "Монітор 24\"", price: 5499, category: "Електроніка" },
-    { id: 10, name: "Светр з вовни", price: 1299, category: "Одяг" },
-    { id: 11, name: "Детективи Агати Крісті", price: 299, category: "Книги" },
-    { id: 12, name: "Кавоварка", price: 1899, category: "Для дому" }
+    { id: 1, name: "Класичний Хронограф 'Timeless'", price: 8999, category: "Класика", icon: "🕰️" },
+    { id: 2, name: "Мінімалістичний 'Form'", price: 4500, category: "Мінімалізм", icon: "⬜" },
+    { id: 3, name: "Спортивний 'Active Pro'", price: 6200, category: "Спорт", icon: "🏃‍♂️" },
+    { id: 4, name: "Дайвер 'Ocean Master'", price: 11500, category: "Дайверські", icon: "🤿" },
+    { id: 5, name: "Розумний Годинник 'Connect'", price: 7800, category: "Смарт", icon: "⌚" },
+    { id: 6, name: "Жіночий 'Elegance Slim'", price: 5499, category: "Класика", icon: "💎" },
+    { id: 7, name: "Тактичний 'Commando'", price: 9100, category: "Спорт", icon: "🛡️" },
+    { id: 8, name: "Кишеньковий 'Vintage'", price: 3200, category: "Класика", icon: " pocket watch" },
 ];
 
 // Кошик
@@ -34,19 +32,51 @@ const cartCountElement = document.getElementById('cart-count');
 const exploreButton = document.getElementById('explore-btn');
 const categoryPreviews = document.querySelectorAll('.category-preview');
 
+// ==========================================
+// 2. ДОПОМІЖНІ ФУНКЦІЇ
+// ==========================================
+
+// Отримати іконку для товару за категорією
+function getProductIcon(category) {
+    const icons = {
+        'Класика': '🕰️',
+        'Мінімалізм': '⬜',
+        'Спорт': '🏃‍♂️',
+        'Дайверські': '🤿',
+        'Смарт': '⌚'
+    };
+    return icons[category] || '📦';
+}
+
+// Змінити кількість товару в кошику
+function changeQuantity(productId, change) {
+    const item = cart.find(i => i.id === productId);
+
+    if (item) {
+        item.quantity += change;
+        
+        if (item.quantity <= 0) {
+            removeFromCart(productId);
+        } else {
+            updateCartUI();
+        }
+    }
+}
+
+// ==========================================
+// 3. ОСНОВНА ЛОГІКА
+// ==========================================
+
 // Відображення товарів
 function renderProducts(category = 'all', searchQuery = '') {
-    // Показати індикатор завантаження
     loadingIndicator.style.display = 'block';
     productsContainer.innerHTML = '';
     
-    // Імітація затримки завантаження
     setTimeout(() => {
         let filteredProducts = category === 'all' 
             ? products 
             : products.filter(product => product.category === category);
         
-        // Фільтрація за пошуковим запитом
         if (searchQuery) {
             const query = searchQuery.toLowerCase();
             filteredProducts = filteredProducts.filter(product => 
@@ -54,13 +84,12 @@ function renderProducts(category = 'all', searchQuery = '') {
             );
         }
         
-        // Очистити контейнер товарів
         productsContainer.innerHTML = '';
         
         if (filteredProducts.length === 0) {
             productsContainer.innerHTML = `
                 <div class="no-products">
-                    <p>Товари не знайдено</p>
+                    <p>На жаль, моделі годинників за вашим запитом не знайдено 😢</p>
                 </div>
             `;
         } else {
@@ -84,23 +113,12 @@ function renderProducts(category = 'all', searchQuery = '') {
             button.addEventListener('click', function() {
                 const productId = parseInt(this.getAttribute('data-id'));
                 addToCart(productId);
+                this.blur(); // ОНОВЛЕННЯ: Прибрати фокус після кліку
             });
         });
         
-        // Приховати індикатор завантаження
         loadingIndicator.style.display = 'none';
     }, 500);
-}
-
-// Отримати іконку для товару за категорією
-function getProductIcon(category) {
-    const icons = {
-        'Електроніка': '📱',
-        'Одяг': '👕',
-        'Книги': '📚',
-        'Для дому': '🏠'
-    };
-    return icons[category] || '📦';
 }
 
 // Додати товар до кошика
@@ -121,7 +139,7 @@ function addToCart(productId) {
         }
         
         updateCartUI();
-        showNotification(`Товар "${product.name}" додано до кошика!`);
+        showNotification(`Додано до кошика! ✅`); 
     }
 }
 
@@ -133,12 +151,13 @@ function removeFromCart(productId) {
 
 // Оновити інтерфейс кошика
 function updateCartUI() {
-    // Очистити контейнер товарів у кошику
     cartItemsContainer.innerHTML = '';
-    
     let total = 0;
+
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<div class="no-products">Кошик порожній. Додайте свій перший годинник!</div>';
+    }
     
-    // Додати товари до кошика
     cart.forEach(item => {
         const itemTotal = item.price * item.quantity;
         total += itemTotal;
@@ -148,35 +167,54 @@ function updateCartUI() {
         cartItemElement.innerHTML = `
             <div class="cart-item-info">
                 <div class="cart-item-name">${item.name}</div>
-                <div class="cart-item-price">${item.price} грн × ${item.quantity}</div>
+                <div class="cart-item-price">${item.price} грн</div>
             </div>
             <div class="cart-item-actions">
+                <button class="cart-qty-btn decrease-qty" data-id="${item.id}">-</button>
                 <span class="cart-item-quantity">${item.quantity}</span>
+                <button class="cart-qty-btn increase-qty" data-id="${item.id}">+</button>
                 <button class="cart-item-remove" data-id="${item.id}">🗑️</button>
             </div>
         `;
         cartItemsContainer.appendChild(cartItemElement);
     });
     
-    // Оновити загальну суму
-    totalPriceElement.textContent = `${total} грн`;
-    
-    // Оновити лічильник товарів у кошику
+    totalPriceElement.textContent = `${total.toLocaleString('uk-UA')} грн`;
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartCountElement.textContent = totalItems;
     
-    // Додати обробники подій для кнопок видалення
+    // Додати обробники подій для кнопок кошика
     document.querySelectorAll('.cart-item-remove').forEach(button => {
         button.addEventListener('click', function() {
             const productId = parseInt(this.getAttribute('data-id'));
             removeFromCart(productId);
+            this.blur(); // ОНОВЛЕННЯ: Прибрати фокус після кліку
         });
+    });
+
+    document.querySelectorAll('.increase-qty').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = parseInt(this.getAttribute('data-id'));
+            changeQuantity(productId, 1);
+            this.blur(); // ОНОВЛЕННЯ: Прибрати фокус після кліку
+        });
+    });
+
+    document.querySelectorAll('.decrease-qty').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = parseInt(this.getAttribute('data-id'));
+            changeQuantity(productId, -1);
+            this.blur(); // ОНОВЛЕННЯ: Прибрати фокус після кліку
+        });
+    });
+    
+    document.querySelector('.checkout-btn').addEventListener('click', function() {
+        this.blur(); // ОНОВЛЕННЯ: Прибрати фокус після кліку
     });
 }
 
-// Показати сповіщення
+// Показати сповіщення (без змін)
 function showNotification(message) {
-    // Створити елемент сповіщення
     const notification = document.createElement('div');
     notification.className = 'notification';
     notification.textContent = message;
@@ -194,10 +232,8 @@ function showNotification(message) {
         animation: slideIn 0.3s ease;
     `;
     
-    // Додати сповіщення на сторінку
     document.body.appendChild(notification);
     
-    // Видалити сповіщення через 3 секунди
     setTimeout(() => {
         notification.style.animation = 'slideOut 0.3s ease';
         setTimeout(() => {
@@ -211,6 +247,7 @@ function openCart() {
     cartSidebar.classList.add('active');
     cartOverlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
+    cartIcon.blur(); // ОНОВЛЕННЯ: Прибираємо фокус з іконки кошика
 }
 
 // Закрити кошик
@@ -218,11 +255,11 @@ function closeCart() {
     cartSidebar.classList.remove('active');
     cartOverlay.style.display = 'none';
     document.body.style.overflow = 'auto';
+    // На закриття фокус не потрібно прибирати, бо він не був на кнопці
 }
 
 // Перемикання сторінок
 function switchPage(pageId) {
-    // Оновити активну кнопку навігації
     navButtons.forEach(btn => {
         btn.classList.remove('active');
         if (btn.getAttribute('data-page') === pageId) {
@@ -230,7 +267,6 @@ function switchPage(pageId) {
         }
     });
     
-    // Перемикати сторінки
     pages.forEach(page => {
         page.classList.remove('active');
         if (page.id === pageId) {
@@ -238,9 +274,10 @@ function switchPage(pageId) {
         }
     });
     
-    // Якщо переходимо на каталог, перемальовуємо товари
     if (pageId === 'catalog-page') {
-        renderProducts();
+        const activeCategory = document.querySelector('.category-btn.active');
+        const category = activeCategory ? activeCategory.getAttribute('data-category') : 'all';
+        renderProducts(category, searchInput.value);
     }
 }
 
@@ -251,6 +288,7 @@ function initApp() {
         button.addEventListener('click', function() {
             const pageId = this.getAttribute('data-page');
             switchPage(pageId);
+            this.blur(); // ОНОВЛЕННЯ: Прибрати фокус після кліку
         });
     });
     
@@ -261,10 +299,11 @@ function initApp() {
             this.classList.add('active');
             const category = this.getAttribute('data-category');
             renderProducts(category, searchInput.value);
+            this.blur(); // ОНОВЛЕННЯ: Прибрати фокус після кліку
         });
     });
     
-    // Обробник події для пошуку
+    // Обробник події для пошуку (focus прибирати не треба, бо це поле вводу)
     searchInput.addEventListener('input', function() {
         const activeCategory = document.querySelector('.category-btn.active');
         const category = activeCategory ? activeCategory.getAttribute('data-category') : 'all';
@@ -273,19 +312,23 @@ function initApp() {
     
     // Обробники подій для кошика
     cartIcon.addEventListener('click', openCart);
-    closeCartButton.addEventListener('click', closeCart);
+    closeCartButton.addEventListener('click', function() {
+        closeCart();
+        this.blur(); // ОНОВЛЕННЯ: Прибрати фокус з кнопки закриття
+    });
     cartOverlay.addEventListener('click', closeCart);
     
     // Обробник для кнопки "Перейти до покупок"
     if (exploreButton) {
-        exploreButton.addEventListener('click', () => {
+        exploreButton.addEventListener('click', function() {
             switchPage('catalog-page');
+            this.blur(); // ОНОВЛЕННЯ: Прибрати фокус після кліку
         });
     }
     
     // Обробники для прев'ю категорій
     categoryPreviews.forEach(preview => {
-        preview.addEventListener('click', () => {
+        preview.addEventListener('click', function() {
             const category = preview.getAttribute('data-category');
             switchPage('catalog-page');
             
@@ -299,15 +342,17 @@ function initApp() {
                 });
                 renderProducts(category);
             }, 100);
+            this.blur(); // ОНОВЛЕННЯ: Прибрати фокус після кліку
         });
     });
     
     // Ініціалізація кошика
     updateCartUI();
+    
+    if (document.getElementById('catalog-page').classList.contains('active')) {
+        renderProducts();
+    }
 }
-
-
-
 
 // Запуск додатку після завантаження DOM
 document.addEventListener('DOMContentLoaded', initApp);
