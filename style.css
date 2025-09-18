@@ -293,11 +293,17 @@ button {
 }
 
 /* --- Картки переваг (Features) --- */
+/* --- Картки переваг (Features) --- */
 .features {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); /* Зменшено minmax */
+    grid-template-columns: 1fr 1fr; /* ЗМІНЕНО: 2 рівні стовпці */
     gap: 0.8rem; /* Зменшено */
     margin-bottom: 1.5rem; /* Зменшено */
+}
+
+/* НОВЕ: Розтягуємо третій елемент на повну ширину */
+.features .feature-card:nth-child(3) {
+    grid-column: 1 / -1; 
 }
 
 .feature-card {
@@ -309,6 +315,7 @@ button {
     border: 1px solid var(--color-border);
     transition: all var(--transition-speed);
 }
+/* ... (решта стилів .feature-card та :hover залишаються) ... */
 
 .feature-card:hover {
     transform: translateY(-0.15rem); /* Зменшено ефект */
@@ -333,6 +340,7 @@ button {
 }
 
 /* --- Прев'ю категорій --- */
+/* --- Прев'ю категорій --- */
 .promo-section h2 {
     font-size: 1.15rem; /* Зменшено */
     margin-bottom: 0.8rem; /* Зменшено */
@@ -342,13 +350,20 @@ button {
 
 .category-previews {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); /* Зменшено minmax */
+    /* ОНОВЛЕННЯ: Жорстко задаємо 2 стовпці (1fr 1fr) */
+    grid-template-columns: 1fr 1fr; 
     gap: 0.8rem; /* Зменшено */
 }
 
+/* НОВЕ ПРАВИЛО: Розтягуємо третій елемент на обидва стовпці */
+.category-previews .category-preview:nth-child(3) {
+    grid-column: 1 / -1;
+}
+
 .category-preview {
+    /* ... (решта стилів category-preview залишаються без змін) ... */
     background-color: var(--color-card-bg);
-    padding: 1rem; /* Зменшено */
+    padding: 1rem; 
     border-radius: var(--border-radius-default);
     text-align: center;
     box-shadow: var(--shadow);
@@ -356,6 +371,8 @@ button {
     border: 1px solid var(--color-border);
     transition: all var(--transition-speed);
 }
+
+/* ... (інші стилі для category-preview:hover) ... */
 
 .category-preview:hover {
     background-color: var(--color-primary);
